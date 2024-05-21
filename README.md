@@ -9,6 +9,8 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
 
 ## LABS
 ### LAB 1: Getting Started with Vivado and SystemVerilog
+1. Arbiter: Design a Round Robin Bus Arbiter
+2. Debugging: Debugging of SystemVerilog Design
 ### LAB 2: A Pipelined Integer Square Root Module
 ### LAB 3: RISC-V Five-Stage Pipeline Optimization
 ### LAB 4: First Try with Architectural Simulation Tools
