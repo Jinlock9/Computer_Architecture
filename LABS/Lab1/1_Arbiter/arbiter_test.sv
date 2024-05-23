@@ -30,8 +30,7 @@ module testbench;
     task exit_on_error;
 		begin
             $display("@@@ Incorrect at time %4.0f", $time);
-            //$display("@@@ Time:%4.0f clock:%b reset:%h  state=%b  request:%b grant:%b correct:%b expected:%b", $time, clock, reset, a1_state, request, grant, correct, EXPECTED_OUT);
-            $display("@@@ Time:%4.0f reset:%h  state=%b  request:%b grant:%b correct:%b expected:%b", $time, reset, a1_state, request, grant, correct, EXPECTED_OUT);
+            $display("@@@ Time:%4.0f clock:%b reset:%h  state=%b  request:%b grant:%b correct:%b expected:%b", $time, clock, reset, a1_state, request, grant, correct, EXPECTED_OUT());
             $display("ENDING TESTBENCH : ERROR !");
             $finish;
 		end
@@ -48,7 +47,7 @@ module testbench;
     //////////////////////////////////////////////////////
 	function [2:0] EXPECTED_OUT;
 		begin
-			EXPECTED_OUT = (a1_state==2'b01 ? 3'b100 : (a1_state==2'b10 ? 3'b010 : (a1_state==2'b11 ? 3'b001 : 3'b000))) & request;
+			EXPECTED_OUT = (a1_state==2'b11 ? 3'b100 : (a1_state==2'b10 ? 3'b010 : (a1_state==2'b01 ? 3'b001 : 3'b000))) & request;
 		end
 	endfunction
 
@@ -104,10 +103,13 @@ module testbench;
         
         // Random test
 		for (int i=0; i < 30; i=i+1) begin 
-            //////////////////////////////////////////////////////
-            // TODO: Implement a series of random test cases    //
-            //////////////////////////////////////////////////////
-            
+            request = $urandom_range(7, 0);
+            for (int j=0; j < 3; j=j+1) begin
+                if (request[j] == 1) begin
+                    @(negedge clock)
+                    CHECK_GRANT(EXPECTED_OUT()); 
+                end
+            end
 		end
         
         $display("ENDING TESTBENCH : SUCCESS !\n");
