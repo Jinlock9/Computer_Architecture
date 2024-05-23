@@ -26,7 +26,6 @@ module testbench;
     end
 
     //--------------------Test bench helper functions--------------------//
-    // It is highly recommended to understand the code here!             //
     task exit_on_error;
 		begin
             $display("@@@ Incorrect at time %4.0f", $time);
@@ -42,9 +41,6 @@ module testbench;
 		end
 	end
 
-    //////////////////////////////////////////////////////
-    // Please use this to write your random test cases:)//
-    //////////////////////////////////////////////////////
 	function [2:0] EXPECTED_OUT;
 		begin
 			EXPECTED_OUT = (a1_state==2'b11 ? 3'b100 : (a1_state==2'b10 ? 3'b010 : (a1_state==2'b01 ? 3'b001 : 3'b000))) & request;
