@@ -12,6 +12,9 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
 1. Arbiter: Design a Round Robin Bus Arbiter
 2. Debugging: Debugging of SystemVerilog Design
 ### LAB 2: A Pipelined Integer Square Root Module
+1. Designing the Pipelined Multiplier
+2. Designing the Integer Square Root Module
+3. CORDIC Implementation
 ### LAB 3: RISC-V Five-Stage Pipeline Optimization
 ### LAB 4: First Try with Architectural Simulation Tools
 
