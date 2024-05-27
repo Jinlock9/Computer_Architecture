@@ -39,8 +39,8 @@ module arbiterFSM(
         endcase
     end
 
-    assign grant[2] = (((state == GRANT_2) & request[2]) & !reset) ? 1'b1 : 1'b0;
-    assign grant[1] = (((state == GRANT_1) & request[1]) & !reset) ? 1'b1 : 1'b0;
-    assign grant[0] = (((state == GRANT_0) & request[0]) & !reset) ? 1'b1 : 1'b0;
+    assign grant[2] = (((state == GRANT_2) & request[2])) ? 1'b1 : 1'b0;
+    assign grant[1] = (((state == GRANT_1) & request[1])) ? 1'b1 : 1'b0;
+    assign grant[0] = (((state == GRANT_0) & request[0])) ? 1'b1 : 1'b0;
     
 endmodule

@@ -26,6 +26,7 @@ module testbench;
     end
 
     //--------------------Test bench helper functions--------------------//
+    // It is highly recommended to understand the code here!             //
     task exit_on_error;
 		begin
             $display("@@@ Incorrect at time %4.0f", $time);
@@ -100,12 +101,8 @@ module testbench;
         // Random test
 		for (int i=0; i < 30; i=i+1) begin 
             request = $urandom_range(7, 0);
-            for (int j=0; j < 3; j=j+1) begin
-                if (request[j] == 1) begin
-                    @(negedge clock)
-                    CHECK_GRANT(EXPECTED_OUT()); 
-                end
-            end
+            @(negedge clock)
+            CHECK_GRANT( EXPECTED_OUT() );
 		end
         
         $display("ENDING TESTBENCH : SUCCESS !\n");
