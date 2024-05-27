@@ -38,6 +38,10 @@ module fsm_ab(
 				if (in) next_state = 2'b01;
 				else next_state = 2'b10;
 			end
+			default: begin
+				out = 0;
+				next_state = 2'b00;
+			end
 		endcase
 	end
 
