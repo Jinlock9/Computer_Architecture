@@ -4,13 +4,13 @@
 
 module testbench();
 
-	logic [63:0] a,b;
+	logic [63:0] a,b; // inputs
 	logic quit, clock, start, reset;
 
-	logic [63:0] result;
+	logic [63:0] result; // output
 	logic done;
 
-	wire [63:0] cres = a*b;
+	wire [63:0] cres = a*b; // ANSWER
 
 	wire correct = (cres===result)|~done;
 
