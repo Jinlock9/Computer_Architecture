@@ -17,11 +17,11 @@ module mult_stage(
 	logic [63:0] prod_in_reg, partial_prod_reg;
 	logic [63:0] partial_product, next_mplier, next_mcand;
 
-	assign product_out = ;
+	assign product_out = prod_in_reg + partial_prod_reg;
 
 	assign partial_product = mplier_in[7:0] * mcand_in;
 
-	assign next_mplier = ;
+	assign next_mplier = {8'b0,mplier_in[63:8]};
 	assign next_mcand = {mcand_in[55:0],8'b0};
 
 	//synopsys sync_set_reset "reset"
