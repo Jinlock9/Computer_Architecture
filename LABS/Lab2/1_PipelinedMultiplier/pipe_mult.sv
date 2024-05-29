@@ -14,11 +14,13 @@ module mult(
 				output done
 			);
 
+	parameter stage = 8;
+
   logic [63:0] mcand_out, mplier_out;
   logic [(7*64)-1:0] internal_products, internal_mcands, internal_mpliers;
   logic [6:0] internal_dones;
   
-	mult_stage mstage [7:0]  (
+	mult_stage #(.stage(stage)) mstage [7:0]  (
 		.clock(clock),
 		.reset(reset),
 		.product_in({internal_products,64'h0}),
