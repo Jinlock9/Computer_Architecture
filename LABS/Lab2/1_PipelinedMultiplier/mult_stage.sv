@@ -22,8 +22,8 @@ module mult_stage(
 
 	assign partial_product = mplier_in[(bits-1):0] * mcand_in;
 
-	assign next_mplier = {{{bits}{1'b0}},mplier_in[63:bits]};
-	assign next_mcand = {mcand_in[(63-bits):0],{{bits}{1'b0}}};
+	assign next_mplier = {{{bits}{1'b0}}, mplier_in[63:bits]};
+	assign next_mcand = {mcand_in[(63-bits):0], {{bits}{1'b0}}};
 
 	//synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
