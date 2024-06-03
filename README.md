@@ -14,8 +14,9 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
 ### LAB 2: A Pipelined Integer Square Root Module
 1. Designing the Pipelined Multiplier
 2. Designing the Integer Square Root Module
-3. CORDIC Implementation
+3. CORDIC Implementation - *incomplete*
 ### LAB 3: RISC-V Five-Stage Pipeline Optimization
+1. Optimize the VeriSimpleV Pipeline!
 ### LAB 4: First Try with Architectural Simulation Tools
 
 ## Author
