@@ -1,4 +1,5 @@
 `timescale 1ns/100ps
+`define DEBUG
 
 module ISR(
     input               reset,
@@ -6,11 +7,21 @@ module ISR(
     input               clock,
     output logic [31:0] result,
     output logic        done
+    `ifdef DEBUG
+	,
+    output logic start,
+    output logic done_reg,
+	output logic [5:0] count
+	`endif
 );
 
-    logic start, flag;
+    `ifndef DEBUG
+    logic start;
     logic done_reg;
-    logic [5:0] count; // 32 ~ 1
+    logic [5:0] count; // 31 ~ 0
+    `endif
+
+    logic flag;
 
     logic [63:0] prod_reg;
     logic [63:0] value_reg;

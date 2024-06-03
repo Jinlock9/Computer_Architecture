@@ -10,6 +10,9 @@ module testbench();
 	logic [31:0] result; // output
 	logic done;
 
+	logic [5:0] count;
+	logic start, done_reg;
+
 	wire correct = ((result * result <= value) & ((result + 1) * (result + 1) > value)) | ~done;
 
     ISR isr0(
@@ -17,7 +20,10 @@ module testbench();
                 .value(value),
                 .clock(clock),
                 .result(result),
-                .done(done));
+                .done(done),
+				.start(start),
+				.done_reg(done_reg),
+				.count(count));
 
 	always @(posedge clock)
 		#(`HALF_CYCLE-5) if(!correct) begin 
@@ -46,7 +52,7 @@ module testbench();
 
 	initial begin
 		$dumpvars;
-		$monitor("Time:%4.0f done:%b value:%d result:%d",$time,done,value,result);
+		$monitor("Time:%4.0f done:%b value:%h start:%b done_reg:%b count:%d result:%b",$time,done,value,start,done_reg,count,result);
 		clock = 0;
 		value = 25;
 		reset = 1;
