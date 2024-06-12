@@ -115,7 +115,8 @@ module ex_stage(
 	assign ex_packet_out.mem_size = id_ex_packet_in.inst.r.funct3;
 
 	logic [`XLEN-1:0] opa_mux_out, opb_mux_out;
-	logic brcond_result;
+	logic brcond_result; // BRANCH PREDICTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	//
 	// ALU opA mux
 	//
