@@ -71,8 +71,7 @@ module pipeline (
 );
 
 	// Pipeline register enables
-	HAZARD if_id_enable, id_ex_enable;
-	logic ex_mem_enable, mem_wb_enable;
+	logic if_id_enable, id_ex_enable, ex_mem_enable, mem_wb_enable;
 	
 	// Outputs from IF-Stage
 	logic [`XLEN-1:0] proc2Imem_addr;
@@ -112,8 +111,8 @@ module pipeline (
 	logic        wb_reg_wr_en_out;
 
 	// Hazard Detection Unit
-	HAZARD data_hazard;
-	HAZARD structure_hazard;
+	logic data_hazard;
+	logic structure_hazard;
 
 	// Forwarding Unit
 	FORWARD forward1;
@@ -378,7 +377,29 @@ module pipeline (
 //               Forwarding Unit                //
 //                                              //
 //////////////////////////////////////////////////
-	forwarding_unit forward (
+	hazard_detection_unit hazard_detection_unit_0 (
+		// Inputs
+		.branch(ex_mem_packet.take_branch),
+		.id_ex_rd_mem(id_ex_packet.rd_mem),
+		.id_ex_wr_mem(id_ex_packet.wr_mem),
+		.id_ex_rd(id_ex_packet.dest_reg_idx),
+		.if_id_rs1(if_id_packet.inst.r.rs1),
+		.if_id_rs2(if_id_packet.inst.r.rs2),
+
+		// Outputs
+		.if_id_enable(if_id_enable),
+		.id_ex_enable(id_ex_enable),
+		.data_hazard(data_hazard),
+		.structure_hazard(structure_hazard)
+	);
+
+
+//////////////////////////////////////////////////
+//                                              //
+//               Forwarding Unit                //
+//                                              //
+//////////////////////////////////////////////////
+	forwarding_unit forwarding_unit_0 (
 		// Inputs
 		.id_ex_rs1 (id_ex_packet.inst.r.rs1),
 		.id_ex_rs2 (id_ex_packet.inst.r.rs2),

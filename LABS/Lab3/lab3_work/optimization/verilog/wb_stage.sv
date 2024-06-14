@@ -20,7 +20,7 @@ module wb_stage(
     input         reset,                // system reset
     input  [`XLEN-1:0] mem_wb_NPC,            // incoming instruction PC+4
     input  [`XLEN-1:0] mem_wb_result,        // incoming instruction result
-    input         mem_wb_take_branch, 
+    input  mem_wb_take_branch, 
     input   [4:0] mem_wb_dest_reg_idx,  // dest index (ZERO_REG if no writeback)
     input         mem_wb_valid_inst,
 
@@ -38,7 +38,7 @@ module wb_stage(
   // back the old NPC as the return address.  Note that ALL branches
   // and jumps write back the 'link' value, but those that don't
   // want it specify ZERO_REG as the destination.
-  assign result_mux = (mem_wb_take_branch) ? mem_wb_NPC : mem_wb_result;
+  assign result_mux = (mem_wb_take_branch == `BRANCH_TAKEN) ? mem_wb_NPC : mem_wb_result;
 
   // Generate signals for write-back to register file
   // reg_wr_en_out computation is sort of overkill since the reg file

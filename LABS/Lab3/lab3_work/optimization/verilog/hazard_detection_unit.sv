@@ -2,7 +2,7 @@
 `define __HAZARD_v__
 
 module hazard_detection_unit (
-    input BRANCH branch,
+    input branch,
     input id_ex_rd_mem,
     input id_ex_wr_mem,
     input [4:0] id_ex_rd,
@@ -10,11 +10,11 @@ module hazard_detection_unit (
     input [4:0] if_id_rs2,
 
     // HAZARD CONTROL
-    output HAZARD if_id_enable,
-    output HAZARD id_ex_enable,
+    output logic if_id_enable,
+    output logic id_ex_enable,
     // HAZARD TYPE
-    output HAZARD data_hazard,
-    output HAZARD structure_hazard
+    output logic data_hazard,
+    output logic structure_hazard
 );
 
     always_comb begin
@@ -27,11 +27,11 @@ module hazard_detection_unit (
         if (id_ex_rd_mem && (id_ex_rd != `ZERO_REG) && ((id_ex_rd == if_id_rs1) || (id_ex_rd == if_id_rs2))) begin
 			id_ex_enable = `HAZARD;
 			if_id_enable = `HAZARD;
-			has_data_hazard = `HAZARD;
+			data_hazard = `HAZARD;
 		end
         // STRUCTURE HAZARD
 		if ((id_ex_rd_mem || id_ex_wr_mem) && (branch == `BRANCH_NOT_TAKEN)) begin
-			has_structure_hazard = `HAZARD;
+			structure_hazard = `HAZARD;
 		end
     end
 

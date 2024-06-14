@@ -149,7 +149,7 @@ module ex_stage(
 	always_comb begin
 		opa_mux_out = `XLEN'hdeadfbac;
 		case (id_ex_packet_in.opa_select)
-			OPA_IS_RS1:  opa_mux_out = id_ex_packet_in.rs1_value;
+			OPA_IS_RS1:  opa_mux_out = rs1_value;
 			OPA_IS_NPC:  opa_mux_out = id_ex_packet_in.NPC;
 			OPA_IS_PC:   opa_mux_out = id_ex_packet_in.PC;
 			OPA_IS_ZERO: opa_mux_out = 0;
@@ -164,7 +164,7 @@ module ex_stage(
 		// value on the output of the mux you have an invalid opb_select
 		opb_mux_out = `XLEN'hfacefeed;
 		case (id_ex_packet_in.opb_select)
-			OPB_IS_RS2:   opb_mux_out = id_ex_packet_in.rs2_value;
+			OPB_IS_RS2:   opb_mux_out = rs2_value;
 			OPB_IS_I_IMM: opb_mux_out = `RV32_signext_Iimm(id_ex_packet_in.inst);
 			OPB_IS_S_IMM: opb_mux_out = `RV32_signext_Simm(id_ex_packet_in.inst);
 			OPB_IS_B_IMM: opb_mux_out = `RV32_signext_Bimm(id_ex_packet_in.inst);
@@ -189,8 +189,8 @@ module ex_stage(
 	 // instantiate the branch condition tester
 	 //
 	brcond brcond (// Inputs
-		.rs1(id_ex_packet_in.rs1_value), 
-		.rs2(id_ex_packet_in.rs2_value),
+		.rs1(rs1_value), 
+		.rs2(rs2_value),
 		.func(id_ex_packet_in.inst.b.funct3), // inst bits to determine check
 
 		// Output

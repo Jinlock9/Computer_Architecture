@@ -2,7 +2,7 @@
 # make assembly - Build the memory file for an assembly source
 # make program - Build the memory file for a C program
 
-SOURCE = test_progs/rv32_fib.s
+SOURCE = test_progs/rv32_copy.s #rv32_fib.s
 
 CRT = crt.s
 LINKERS = linker.lds
