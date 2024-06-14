@@ -120,6 +120,12 @@ typedef enum logic [4:0] {
 	ALU_REMU    = 5'h11
 } ALU_FUNC;
 
+typedef enum logic [1:0] {
+	NO_FORWARD     = 2'h0;
+	EX_MEM_FORWARD = 2'h1;
+	MEM_WB_FORWARD = 2'h2;
+} FORWARD;
+
 //////////////////////////////////////////////
 //
 // Assorted things it is not wise to change

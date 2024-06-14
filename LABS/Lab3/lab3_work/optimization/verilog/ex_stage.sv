@@ -100,6 +100,10 @@ module ex_stage(
 	input clock,               // system clock
 	input reset,               // system reset
 	input ID_EX_PACKET   id_ex_packet_in,
+	input FORWARD forward1,
+	input FORWARD forward2,
+	input [`XLEN-1:0] ex_mem_value,
+	input [`XLEN-1:0] mem_wb_value,
 	output EX_MEM_PACKET ex_packet_out
 );
 	// Pass-throughs
@@ -114,8 +118,30 @@ module ex_stage(
 	assign ex_packet_out.valid = id_ex_packet_in.valid;
 	assign ex_packet_out.mem_size = id_ex_packet_in.inst.r.funct3;
 
+	logic [`XLEN-1:0] rs1_value, rs2_value;
 	logic [`XLEN-1:0] opa_mux_out, opb_mux_out;
-	logic brcond_result; // BRANCH PREDICTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	logic brcond_result;
+
+	always_comb begin
+		ex_packet_out.rs2_value = id_ex_packet_in.rs2_value;
+		case (forward2)
+			EX_MEM_FORWARD: ex_packet_out.rs2_value = ex_mem_value;
+			MEM_WB_FORWARD: ex_packet_out.rs2_value = mem_wb_value;
+		endcase
+	end
+
+	always_comb begin
+		rs1_value = id_ex_packet_in.rs1_value;
+		rs2_value = id_ex_packet_in.rs2_value;
+		case (forward1) 
+			EX_MEM_FORWARD: rs1_value = ex_mem_value;
+			MEM_WB_FORWARD: rs1_value = mem_wb_value;
+		endcase
+		case (forward2)
+			EX_MEM_FORWARD: rs2_value = ex_mem_value;
+			MEM_WB_FORWARD: rs2_value = mem_wb_value;
+		endcase
+	end
 
 	//
 	// ALU opA mux

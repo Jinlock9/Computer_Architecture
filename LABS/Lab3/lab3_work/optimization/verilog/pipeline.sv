@@ -109,6 +109,14 @@ module pipeline (
 	logic [`XLEN-1:0] wb_reg_wr_data_out;
 	logic  [4:0] wb_reg_wr_idx_out;
 	logic        wb_reg_wr_en_out;
+
+	// Forwarding Unit
+	FORWARD forward1;
+	FORWARD forward2;
+
+	// Hazard Detection Unit
+	logic data_hazard;
+	logic structure_hazard;
 	
 	assign pipeline_completed_insts = {3'b0, mem_wb_valid_inst};
 	assign pipeline_error_status =  mem_wb_illegal             ? ILLEGAL_INST :
@@ -130,6 +138,7 @@ module pipeline (
 	     (proc2Dmem_command == BUS_NONE) ? DOUBLE : proc2Dmem_size;
 	assign proc2mem_data = {32'b0, proc2Dmem_data};
 
+
 //////////////////////////////////////////////////
 //                                              //
 //                  IF-Stage                    //
@@ -147,7 +156,7 @@ module pipeline (
 		.clock (clock),
 		.reset (reset),
 		.mem_wb_valid_inst(mem_wb_valid_inst),
-		.ex_mem_take_branch(ex_mem_packet.take_branch),
+		.ex_mem_take_branch(ex_mem_packet.take_branch), // HAZARD 1: BRANCH MISPREDICTION
 		.ex_mem_target_pc(ex_mem_packet.alu_result),
 		.Imem2proc_data(mem2proc_data),
 		
@@ -169,7 +178,7 @@ module pipeline (
 	assign if_id_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset) begin 
+		if (reset || ex_mem_packet.take_branch) begin // HAZARD 1: BRANCH MISPREDICTION
 			if_id_packet.inst  <= `SD `NOP;
 			if_id_packet.valid <= `SD `FALSE;
             if_id_packet.NPC   <= `SD 0;
@@ -214,7 +223,7 @@ module pipeline (
 	assign id_ex_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset) begin
+		if (reset || ex_mem_packet.take_branch) begin // HAZARD 1: BRANCH MISPREDICTION
 			id_ex_packet <= `SD '{{`XLEN{1'b0}},
 				{`XLEN{1'b0}}, 
 				{`XLEN{1'b0}}, 
@@ -251,6 +260,10 @@ module pipeline (
 		.clock(clock),
 		.reset(reset),
 		.id_ex_packet_in(id_ex_packet),
+		.forward1(forward1),
+		.forward2(forward2),
+		.ex_mem_value(ex_mem_packet.alu_result),
+		.mem_wb_value(mem_wb_result),
 		// Outputs
 		.ex_packet_out(ex_packet)
 	);
@@ -268,7 +281,7 @@ module pipeline (
 	assign ex_mem_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset) begin
+		if (reset || ex_mem_packet.take_branch) begin
 			ex_mem_IR     <= `SD `NOP;
 			ex_mem_packet <= `SD 0;
 		end else begin
@@ -355,6 +368,24 @@ module pipeline (
 		.reg_wr_data_out(wb_reg_wr_data_out),
 		.reg_wr_idx_out(wb_reg_wr_idx_out),
 		.reg_wr_en_out(wb_reg_wr_en_out)
+	);
+
+
+//////////////////////////////////////////////////
+//                                              //
+//               Forwarding Unit                //
+//                                              //
+//////////////////////////////////////////////////
+	forwarding_unit forward (
+		// Inputs
+		.id_ex_rs1 (id_ex_packet.inst.r.rs1),
+		.id_ex_rs2 (id_ex_packet.inst.r.rs2),
+		.ex_mem_rd (ex_mem_packet.dest_reg_idx),
+		.mem_wb_rd (mem_wb_dest_reg_idx),
+
+		// Outputs
+		.forward1 (forward1),
+		.forward2 (forward2)
 	);
 
 endmodule  // module verisimple
