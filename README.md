@@ -17,6 +17,8 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
 3. CORDIC Implementation - *incomplete*
 ### LAB 3: RISC-V Five-Stage Pipeline Optimization
 1. RISC-V Five-Stage Pipeline Optimization
+    - Simple RISC-V Five-Stage Pipeline Processor
+    - Hazard Control: Structural, Control, and Data
 ### LAB 4: First Try with Architectural Simulation Tools
 
 ## Author
