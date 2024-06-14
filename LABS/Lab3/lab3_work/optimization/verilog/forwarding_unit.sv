@@ -1,5 +1,5 @@
-`ifndef __HAZARD_V__
-`define __HAZARD_v__
+`ifndef __FORWARD_V__
+`define __FORWARD_v__
 
 module forwarding_unit (
     input [4:0] id_ex_rs1,
@@ -42,4 +42,4 @@ module forwarding_unit (
 
 endmodule : forwarding_unit
 
-`endif // __HAZARD_V__
+`endif // __FORWARD_V__

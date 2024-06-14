@@ -126,6 +126,16 @@ typedef enum logic [1:0] {
 	MEM_WB_FORWARD = 2'h2;
 } FORWARD;
 
+typedef enum logic {
+	NON_HAZARD = 1'b0;
+	HAZARD     = 1'b1;
+} HAZARD;
+
+typedef enum logic {
+	BRANCH_NOT_TAKEN = 1'b0;
+	BRANCH_TAKEN     = 1'b1;
+} BRANCH;
+
 //////////////////////////////////////////////
 //
 // Assorted things it is not wise to change
@@ -294,7 +304,7 @@ typedef struct packed {
 typedef struct packed {
 	logic [`XLEN-1:0] alu_result; // alu_result
 	logic [`XLEN-1:0] NPC; //pc + 4
-	logic             take_branch; // is this a taken branch?
+	BRANCH            take_branch; // is this a taken branch?
 	//pass throughs from decode stage
 	logic [`XLEN-1:0] rs2_value;
 	logic             rd_mem, wr_mem;

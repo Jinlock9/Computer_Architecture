@@ -71,7 +71,8 @@ module pipeline (
 );
 
 	// Pipeline register enables
-	logic   if_id_enable, id_ex_enable, ex_mem_enable, mem_wb_enable;
+	HAZARD if_id_enable, id_ex_enable;
+	logic ex_mem_enable, mem_wb_enable;
 	
 	// Outputs from IF-Stage
 	logic [`XLEN-1:0] proc2Imem_addr;
@@ -110,13 +111,13 @@ module pipeline (
 	logic  [4:0] wb_reg_wr_idx_out;
 	logic        wb_reg_wr_en_out;
 
+	// Hazard Detection Unit
+	HAZARD data_hazard;
+	HAZARD structure_hazard;
+
 	// Forwarding Unit
 	FORWARD forward1;
 	FORWARD forward2;
-
-	// Hazard Detection Unit
-	logic data_hazard;
-	logic structure_hazard;
 	
 	assign pipeline_completed_insts = {3'b0, mem_wb_valid_inst};
 	assign pipeline_error_status =  mem_wb_illegal             ? ILLEGAL_INST :
@@ -159,6 +160,8 @@ module pipeline (
 		.ex_mem_take_branch(ex_mem_packet.take_branch), // HAZARD 1: BRANCH MISPREDICTION
 		.ex_mem_target_pc(ex_mem_packet.alu_result),
 		.Imem2proc_data(mem2proc_data),
+		.data_hazard(data_hazard),
+		.structure_hazard(structure_hazard),
 		
 		// Outputs
 		.proc2Imem_addr(proc2Imem_addr),
@@ -175,16 +178,15 @@ module pipeline (
 	assign if_id_NPC        = if_id_packet.NPC;
 	assign if_id_IR         = if_id_packet.inst;
 	assign if_id_valid_inst = if_id_packet.valid;
-	assign if_id_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset || ex_mem_packet.take_branch) begin // HAZARD 1: BRANCH MISPREDICTION
+		if (reset || (ex_mem_packet.take_branch == `BRANCH_TAKEN)) begin // HAZARD 1: BRANCH MISPREDICTION
 			if_id_packet.inst  <= `SD `NOP;
 			if_id_packet.valid <= `SD `FALSE;
             if_id_packet.NPC   <= `SD 0;
             if_id_packet.PC    <= `SD 0;
 		end else begin// if (reset)
-			if (if_id_enable) begin
+			if (if_id_enable == `NON_HAZARD) begin
 				if_id_packet <= `SD if_packet; 
 			end // if (if_id_enable)	
 		end
@@ -223,7 +225,7 @@ module pipeline (
 	assign id_ex_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset || ex_mem_packet.take_branch) begin // HAZARD 1: BRANCH MISPREDICTION
+		if (reset || (id_ex_enable == `HAZARD) || (ex_mem_packet.take_branch == `BRANCH_TAKEN)) begin // HAZARD 1: BRANCH MISPREDICTION
 			id_ex_packet <= `SD '{{`XLEN{1'b0}},
 				{`XLEN{1'b0}}, 
 				{`XLEN{1'b0}}, 
@@ -243,7 +245,7 @@ module pipeline (
 				1'b0 //valid
 			}; 
 		end else begin // if (reset)
-			if (id_ex_enable) begin
+			if (id_ex_enable == `NON_HAZARD) begin
 				id_ex_packet <= `SD id_packet;
 			end // if
 		end // else: !if(reset)
@@ -281,7 +283,7 @@ module pipeline (
 	assign ex_mem_enable = 1'b1; // always enabled
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
-		if (reset || ex_mem_packet.take_branch) begin
+		if (reset || (ex_mem_packet.take_branch == `BRANCH_TAKEN)) begin
 			ex_mem_IR     <= `SD `NOP;
 			ex_mem_packet <= `SD 0;
 		end else begin

@@ -16,10 +16,13 @@ module if_stage(
 	input         reset,                  // system reset
 	input         mem_wb_valid_inst,      // only go to next instruction when true
 	                                      // makes pipeline behave as single-cycle
-	input         ex_mem_take_branch,      // taken-branch signal
+	input  BRANCH ex_mem_take_branch,      // taken-branch signal
 	input  [`XLEN-1:0] ex_mem_target_pc,        // target pc: use if take_branch is TRUE
 	input  [63:0] Imem2proc_data,          // Data coming back from instruction-memory
 
+	input HAZARD data_hazard,
+	input HAZARD structure_hazard,
+	
 	output logic [`XLEN-1:0] proc2Imem_addr,    // Address sent to Instruction memory
 	output IF_ID_PACKET if_packet_out         // Output data packet from IF going to ID, see sys_defs for signal information 
 );
@@ -42,10 +45,10 @@ module if_stage(
 	// next PC is target_pc if there is a taken branch or
 	// the next sequential PC (PC+4) if no branch
 	// (halting is handled with the enable PC_enable;
-	assign next_PC = ex_mem_take_branch ? ex_mem_target_pc : PC_plus_4;
+	assign next_PC = (ex_mem_take_branch == `BRANCH_TAKEN) ? ex_mem_target_pc : PC_plus_4;
 	
 	// The take-branch signal must override stalling (otherwise it may be lost)
-	assign PC_enable = if_packet_out.valid | ex_mem_take_branch;
+	assign PC_enable = (if_packet_out.valid & (data_hazard == `NON_HAZARD)) | (ex_mem_take_branch == `BRANCH_TAKEN);
 	
 	// Pass PC+4 down pipeline w/instruction
 	assign if_packet_out.NPC = PC_plus_4;
@@ -63,10 +66,12 @@ module if_stage(
 	// fetch to stall until the previous instruction has completed
 	// This must be removed for Project 3
 	// synopsys sync_set_reset "reset"
-	// always_ff @(posedge clock) begin
-	// 	if (reset)
-	// 		if_packet_out.valid <= `SD 1;  // must start with something
-	// 	else
-	// 		if_packet_out.valid <= `SD mem_wb_valid_inst;
-	// end
+	always_ff @(posedge clock) begin
+		if (reset)
+			if_packet_out.valid <= `SD 1;  // must start with something
+		else if (structure_hazard == `HAZARD)
+			if_packet_out.valid <= `SD 0;
+		else
+			if_packet_out.valid <= `SD 1;
+	end
 endmodule  // module if_stage

@@ -200,7 +200,8 @@ module ex_stage(
 	 // ultimate "take branch" signal:
 	 //	unconditional, or conditional and the condition is true
 	assign ex_packet_out.take_branch = id_ex_packet_in.uncond_branch
-		                          | (id_ex_packet_in.cond_branch & brcond_result);
+		                          | (id_ex_packet_in.cond_branch & brcond_result) 
+								  ? `BRANCH_TAKEN : `BRANCH_NOT_TAKEN;
 
 endmodule // module ex_stage
 `endif // __EX_STAGE_V__
