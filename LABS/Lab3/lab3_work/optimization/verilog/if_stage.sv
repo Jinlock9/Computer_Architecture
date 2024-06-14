@@ -48,6 +48,7 @@ module if_stage(
 	assign next_PC = (ex_mem_take_branch == `BRANCH_TAKEN) ? ex_mem_target_pc : PC_plus_4;
 	
 	// The take-branch signal must override stalling (otherwise it may be lost)
+	// NO STRUCTURAL HAZARD AND DATA HAZARD / OR BRANCH IS TAKEN -> PC ENABLED
 	assign PC_enable = (if_packet_out.valid & (data_hazard == `NON_HAZARD)) | (ex_mem_take_branch == `BRANCH_TAKEN);
 	
 	// Pass PC+4 down pipeline w/instruction
