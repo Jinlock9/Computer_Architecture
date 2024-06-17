@@ -63,9 +63,7 @@ module if_stage(
 			PC_reg <= `SD next_PC; // transition to next PC
 	end  // always
 	
-	// This FF controls the stall signal that artificially forces
-	// fetch to stall until the previous instruction has completed
-	// This must be removed for Project 3
+	// This FF controls the stall signal until structural hazard get resolved
 	// synopsys sync_set_reset "reset"
 	always_ff @(posedge clock) begin
 		if (reset)
