@@ -27,7 +27,7 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
     - work/file_to_submit_a.txt
 2. Play with Configurations
     - Using the default configuration scripts  
-    - `build/RISCV/gem5.opt configs/example/se.py --param 'system.cpu[0].workload[:].release = "99.99.99"' --cmd=lab4/part2_test --cpu-type=RiscvO3CPU --l1d_size=4kB --l1i_size=4kB --l2_size=32kB --l1d_assoc=8 --bp-type=TournamentBP --caches --l2cache | tee file_to_submit_b.txt`
+    - `build/RISCV/gem5.opt configs/example/se.py --param 'system.cpu[0].workload[:].release = "99.99.99"' --cmd=lab4/part2_test --cpu-type=RiscvO3CPU --l1d_size=4kB --l1i_size=4kB --l2_size=32kB --l1d_assoc=4 --bp-type=TournamentBP --caches --l2cache | tee file_to_submit_b.txt`
     - work/file_to_submit_b.txt
     - work/m5out:
         - config.ini
