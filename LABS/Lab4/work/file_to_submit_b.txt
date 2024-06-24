@@ -4,9 +4,9 @@ gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 version 22.1.0.0
 gem5 compiled Jun 19 2024 20:43:50
-gem5 started Jun 19 2024 23:31:35
-gem5 executing on ECE4700Jgem5-9, pid 15282
-command line: build/RISCV/gem5.opt configs/example/se.py --param 'system.cpu[0].workload[:].release = "99.99.99"' --cmd=lab4/part2_test --cpu-type=RiscvO3CPU --l1d_size=4kB --l1i_size=4kB --l2_size=32kB --l1d_assoc=8 --bp-type=TournamentBP --caches --l2cache
+gem5 started Jun 24 2024 21:12:37
+gem5 executing on ECE4700Jgem5-9, pid 23994
+command line: build/RISCV/gem5.opt configs/example/se.py --param 'system.cpu[0].workload[:].release = "99.99.99"' --cmd=lab4/part2_test --cpu-type=RiscvO3CPU --l1d_size=4kB --l1i_size=4kB --l2_size=32kB --l1d_assoc=4 --bp-type=TournamentBP --caches --l2cache
 
 **** REAL SIMULATION ****
 Exiting @ tick 62258500 because exiting with last active thread context
