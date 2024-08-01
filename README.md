@@ -6,7 +6,7 @@ Course works of 2024SU **ECE4700J: Computer Architecture** course at University 
 > In the event that similar course content is assigned going forward, it is the duty of JI students to avoid copying or adjusting these codes, or MD/PDF documents, in adherence to the Honor Code. The repository owner disclaims any liability for the actions of others.
 
 ## PROJECT
-Scalar Intel P6 Style Out-of-Order Pipeline
+**Scalar Intel P6 Style Out-of-Order Pipeline**
 - P6 Microarchitecture
 - Tomasulo Algorithm
 - Re-order Buffer
@@ -38,8 +38,28 @@ Scalar Intel P6 Style Out-of-Order Pipeline
         - config.json
         - stats.txt
 
-## Author
+## Contents
+- Introduction to Computer Architecture
+    - Quantitative Analysis
+- The Processing Part
+    - Fundamental Processors
+    - Advanced Processors
+        - Superscalar
+        - Out of Order
+- Memory
+    - Advanced Cache
+    - Prefetching
+    - Virtual Memory
+- Multiprocessors
+    - GPUs
+    - Multicore
+- Domain-Specific Architectures (DSA)
+- Processing in Memory (PIM)
+- Reconfigurable Computing
+- AI Accelerators
+- High level sysnthesis (HLS)
 
+## Author
 ### Jinlock Choi
 - University of Michigan - Shanghai Jiaotong University Joint Institute
 - jinlock99@sjtu.edu.cn
