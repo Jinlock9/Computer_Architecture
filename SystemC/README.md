@@ -12,3 +12,4 @@ Refer to [Youtube lecture](https://www.youtube.com/watch?v=NCFxBGLB5xs&list=PLcv
 1. Introduction
 2. `SC_CTHREAD()`
 3. Testbenches
+4. Handshaking

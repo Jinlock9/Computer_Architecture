@@ -1,10 +1,16 @@
 #include <systemc.h>
 
 SC_MODULE ( fir ) {
-    sc_in<bool>        clk;
-    sc_in<bool>        rst;
-    sc_in<sc_int<16>>  in;
-    sc_out<sc_int<16>> out;
+    sc_in<bool>             clk;
+    sc_in<bool>             rst;
+
+    sc_in<sc_int<16>>       inp;
+    sc_in<bool>             inp_vld;
+    sc_out<bool>            inp_rdy;
+
+    sc_out<sc_int<16>>      outp;
+    sc_out<bool>            outp_vld;
+    sc_in<bool>             outp_rdy;
 
     void fir_main();
 
