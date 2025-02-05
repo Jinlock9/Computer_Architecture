@@ -16,6 +16,9 @@ SC_MODULE(tb) {
     void source(); // Produce output values (rst, inp)
     void sink();   // Read input values
 
+    FILE *outfp;
+    sc_time start_time[64], end_time[64], clock_period;
+
     SC_CTOR(tb) {
         SC_CTHREAD(source, clk.pos());
         SC_CTHREAD(sink, clk.pos());

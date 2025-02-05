@@ -13,3 +13,4 @@ Refer to [Youtube lecture](https://www.youtube.com/watch?v=NCFxBGLB5xs&list=PLcv
 2. `SC_CTHREAD()`
 3. Testbenches
 4. Handshaking
+5. Testbench Measurements
