@@ -1,5 +1,7 @@
 #include "tb.h"
 
+#include <systemc.h>
+
 void tb::source() {
     // Reset
     inp.write(0);
@@ -27,7 +29,7 @@ void tb::source() {
 
     // Hanging simulation guard condition
     wait(10000);
-    print("Hanging simulation stopped by TB source thread. Please check DUT module.\n");
+    printf("Hanging simulation stopped by TB source thread. Please check DUT module.\n");
     sc_stop();
 }
 
@@ -35,7 +37,7 @@ void tb::sink() {
     sc_int<16> indata;
 
     // Extract clock period
-    sc_clock *clk_p = DCAST<sc_clock*>(clk.get_interface());
+    sc_clock *clk_p = dynamic_cast<sc_clock*>(clk.get_interface());
     clock_period = clk_p->period();
 
     // Open simulation output results file

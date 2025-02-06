@@ -18,4 +18,4 @@ SC_MODULE ( fir ) {
         SC_CTHREAD ( fir_main, clk.pos() );
         reset_signal_is( rst, true );
     }
-}
+};

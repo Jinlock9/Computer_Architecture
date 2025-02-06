@@ -1,5 +1,7 @@
 #include "fir.h"
 
+#include <systemc.h>
+
 // Coefficients for each FIR
 const sc_uint<8> coef[5] = {
     18,
@@ -31,7 +33,7 @@ void fir::fir_main(void) {
         inp_rdy.write(1);
         do {
             wait();
-        } while (!inp_valid.read());
+        } while (!inp_vld.read());
         in_val = inp.read();
         inp_rdy.write(0);
 
@@ -49,7 +51,7 @@ void fir::fir_main(void) {
         outp.write(out_val);
         do {
             wait();
-        } while (!outp_ready.read());
+        } while (!outp_rdy.read());
         outp_vld.write(0);
     } // While
 }

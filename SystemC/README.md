@@ -14,3 +14,4 @@ Refer to [Youtube lecture](https://www.youtube.com/watch?v=NCFxBGLB5xs&list=PLcv
 3. Testbenches
 4. Handshaking
 5. Testbench Measurements
+6. Compiling and Running Simulations
